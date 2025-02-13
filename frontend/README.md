@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UML Diagram Generator  
 
-## Getting Started
+## 📌 Overview  
+A web-based tool that converts text into UML diagrams using **Mermaid.js**. Built with **Next.js (React) & Python**.  
 
-First, run the development server:
+## 🚀 Features  
+✅ Convert text-based descriptions into UML diagrams  
+✅ Supports **class & sequence diagrams**  
+✅ Fast rendering with Mermaid.js  
+✅ No database required  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🛠️ Tech Stack  
+**Frontend:** Next.js (React), TypeScript, Tailwind CSS  
+**Backend:** Python (FastAPI or Flask), REST API  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📂 Directory Structure  
+/diagramx
+│── backend/ (Python API)
+│── frontend/ (Next.js App)
+│── .gitignore
+│── README.md
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🔧 Installation & Setup  
 
-## Learn More
+1️⃣ Clone the repository:  
+git clone https://github.com/PratikPisal4304/UMLDX.git 
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2️⃣ Install dependencies:
+cd frontend && npm install  
+cd ../backend && pip install -r requirements.txt  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3️⃣ Start the servers:
+uvicorn main:app --reload  # Backend  
+npm run dev                # Frontend  
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
