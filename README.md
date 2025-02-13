@@ -25,16 +25,16 @@ A web-based tool that converts text into UML diagrams using **Mermaid.js**. Buil
 
 1️⃣ Clone the repository:  
 
-git clone https://github.com/PratikPisal4304/UMLDX.git 
+    git clone https://github.com/PratikPisal4304/UMLDX.git 
 
 
 2️⃣ Install dependencies:
 
-cd frontend && npm install  
-cd ../backend && pip install -r requirements.txt  
+    cd frontend && npm install  
+    cd ../backend && pip install -r requirements.txt  
 
 3️⃣ Start the servers:
 
-uvicorn main:app --reload  # Backend  
-npm run dev                # Frontend  
+    uvicorn main:app --reload  # Backend  
+    npm run dev                # Frontend  
 
