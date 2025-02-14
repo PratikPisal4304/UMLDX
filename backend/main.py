@@ -36,7 +36,7 @@ diagram_prompts = {
 }
 
 # Cache to store the last generated diagram
-cache = {"mermaid_code": None}  # Store only the last generated diagram
+cache = {"mermaid_code": None}
 
 @app.post("/generate_diagram")
 async def generate_diagram(request: Request):
@@ -44,14 +44,13 @@ async def generate_diagram(request: Request):
     description = data.get("description")
     diagram_type = data.get("diagram_type", "classDiagram")
 
-    prompt = f"Modify the following Mermaid.js diagram based on this new description: {description}.\n\n"
-    
-    # If a previous diagram exists, pass it as context
-    if cache["mermaid_code"]:
-        prompt += f"Existing Diagram:\n{cache['mermaid_code']}"
+    if not description:
+        raise HTTPException(status_code=400, detail="Description cannot be empty.")
 
+    # Ensure the first request generates a new diagram properly
+    if cache["mermaid_code"]:
+        prompt = f"Modify the following Mermaid.js diagram based on this new description: {description}.\n\nExisting Diagram:\n{cache['mermaid_code']}"
     else:
-        # If there's no previous diagram, generate a new one
         prompt = f"Generate {diagram_prompts.get(diagram_type, 'a UML diagram')} using Mermaid.js. The description is: {description}."
 
     try:
@@ -62,8 +61,8 @@ async def generate_diagram(request: Request):
             max_tokens=500
         )
 
-        if not response.choices:
-            raise HTTPException(status_code=500, detail="No response from OpenAI.")
+        if not response.choices or not response.choices[0].message.content.strip():
+            raise HTTPException(status_code=500, detail="Failed to generate Mermaid diagram.")
 
         # Extract and clean the Mermaid code
         mermaid_code = response.choices[0].message.content.strip()
@@ -75,7 +74,13 @@ async def generate_diagram(request: Request):
         return {"mermaid_code": mermaid_code}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Error generating diagram: {str(e)}")
+
+@app.post("/refresh_diagram")
+async def refresh_diagram():
+    """Clears the existing diagram cache so that a new one is generated."""
+    cache["mermaid_code"] = None
+    return {"message": "Diagram cache cleared. Next generation will create a new diagram."}
 
 if __name__ == "__main__":
     import uvicorn

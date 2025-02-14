@@ -7,13 +7,10 @@ export default function Home() {
     const [description, setDescription] = useState("");
     const [diagramType, setDiagramType] = useState("classDiagram");
     const [mermaidCode, setMermaidCode] = useState("");
-    const [prevPrompt, setPrevPrompt] = useState(""); // Track last used prompt
-    const [isLoading, setIsLoading] = useState(false); // Loading state
+    const [isLoading, setIsLoading] = useState(false);
 
-    // Generate Diagram (Only Updates Existing One)
+    // Function to fetch and generate a UML diagram
     const generateDiagram = async () => {
-        const currentPrompt = `${description}--${diagramType}`; // Unique key for each change
-
         if (!description.trim()) {
             alert("Please enter a description.");
             return;
@@ -32,9 +29,7 @@ export default function Home() {
 
             const data = await response.json();
             if (data.mermaid_code) {
-                setMermaidCode(data.mermaid_code); // Update diagram
-                setPrevPrompt(currentPrompt); // Update tracking
-                renderMermaidDiagram(data.mermaid_code); // Render the diagram in-place
+                setMermaidCode(data.mermaid_code); // Update diagram state
             } else {
                 console.error("Error:", data.error);
                 alert("Error generating diagram.");
@@ -47,24 +42,35 @@ export default function Home() {
         }
     };
 
-    // Function to render Mermaid Diagram (Ensures Single Diagram Update)
+    // Automatically render the diagram when mermaidCode updates
+    useEffect(() => {
+        if (mermaidCode) {
+            renderMermaidDiagram(mermaidCode);
+        }
+    }, [mermaidCode]);
+
+    // Function to render Mermaid.js diagram dynamically
     const renderMermaidDiagram = (code: string) => {
         const diagramContainer = document.getElementById("mermaid-container");
         if (diagramContainer) {
-            diagramContainer.innerHTML = `<div class="mermaid">${code}</div>`; // Replace the existing diagram
+            diagramContainer.innerHTML = `<div class="mermaid">${code}</div>`;
             mermaid.initialize({ startOnLoad: true });
             mermaid.contentLoaded();
         }
     };
 
-    // Refresh Button: Clears everything
-    const handleRefresh = () => {
+    // Refresh function to clear diagram cache (frontend & backend)
+    const handleRefresh = async () => {
         setDescription("");
         setDiagramType("classDiagram");
         setMermaidCode("");
-        setPrevPrompt(""); // Reset tracking
+        try {
+            await fetch("http://localhost:8000/refresh_diagram", { method: "POST" });
+        } catch (error) {
+            console.error("Error refreshing:", error);
+        }
         const diagramContainer = document.getElementById("mermaid-container");
-        if (diagramContainer) diagramContainer.innerHTML = ""; // Clear diagram
+        if (diagramContainer) diagramContainer.innerHTML = "";
     };
 
     return (
@@ -122,7 +128,7 @@ export default function Home() {
                         <h2 className="text-2xl font-bold mb-4">Generated Diagram:</h2>
 
                         <div className="bg-white p-4 rounded-md border border-gray-300 mb-8">
-                            <div id="mermaid-container"></div> {/* This will be updated dynamically */}
+                            <div id="mermaid-container"></div>
                         </div>
                     </div>
                 )}
