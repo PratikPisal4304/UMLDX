@@ -2,6 +2,7 @@
 
 import mermaid from "mermaid";
 import { useEffect, useState } from "react";
+import html2canvas from "html2canvas";
 
 export default function Home() {
     const [description, setDescription] = useState("");
@@ -9,7 +10,6 @@ export default function Home() {
     const [mermaidCode, setMermaidCode] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    // Function to fetch and generate a UML diagram
     const generateDiagram = async () => {
         if (!description.trim()) {
             alert("Please enter a description.");
@@ -29,7 +29,7 @@ export default function Home() {
 
             const data = await response.json();
             if (data.mermaid_code) {
-                setMermaidCode(data.mermaid_code); // Update diagram state
+                setMermaidCode(data.mermaid_code);
             } else {
                 console.error("Error:", data.error);
                 alert("Error generating diagram.");
@@ -42,14 +42,12 @@ export default function Home() {
         }
     };
 
-    // Automatically render the diagram when mermaidCode updates
     useEffect(() => {
         if (mermaidCode) {
             renderMermaidDiagram(mermaidCode);
         }
     }, [mermaidCode]);
 
-    // Function to render Mermaid.js diagram dynamically
     const renderMermaidDiagram = (code: string) => {
         const diagramContainer = document.getElementById("mermaid-container");
         if (diagramContainer) {
@@ -59,7 +57,6 @@ export default function Home() {
         }
     };
 
-    // Refresh function to clear diagram cache (frontend & backend)
     const handleRefresh = async () => {
         setDescription("");
         setDiagramType("classDiagram");
@@ -71,6 +68,31 @@ export default function Home() {
         }
         const diagramContainer = document.getElementById("mermaid-container");
         if (diagramContainer) diagramContainer.innerHTML = "";
+    };
+
+    const copyToClipboard = () => {
+        if (mermaidCode) {
+            navigator.clipboard.writeText(mermaidCode);
+            alert("Mermaid code copied to clipboard!");
+        }
+    };
+
+    const downloadImage = async (format: "png" | "jpeg") => {
+        const diagramContainer = document.getElementById("mermaid-container");
+        if (!diagramContainer) {
+            alert("No diagram available to download.");
+            return;
+        }
+
+        try {
+            const canvas = await html2canvas(diagramContainer);
+            const link = document.createElement("a");
+            link.href = canvas.toDataURL(`image/${format}`);
+            link.download = `diagram.${format}`;
+            link.click();
+        } catch (error) {
+            console.error("Error capturing image:", error);
+        }
     };
 
     return (
@@ -125,11 +147,32 @@ export default function Home() {
                             <code>{mermaidCode}</code>
                         </pre>
 
-                        <h2 className="text-2xl font-bold mb-4">Generated Diagram:</h2>
+                        <button
+                            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 mr-2"
+                            onClick={copyToClipboard}
+                        >
+                            Copy Mermaid Code
+                        </button>
+
+                        <h2 className="text-2xl font-bold mb-4 mt-4">Generated Diagram:</h2>
 
                         <div className="bg-white p-4 rounded-md border border-gray-300 mb-8">
                             <div id="mermaid-container"></div>
                         </div>
+
+                        <button
+                            className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 mr-2"
+                            onClick={() => downloadImage("png")}
+                        >
+                            Download as PNG
+                        </button>
+
+                        <button
+                            className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
+                            onClick={() => downloadImage("jpeg")}
+                        >
+                            Download as JPEG
+                        </button>
                     </div>
                 )}
             </main>
