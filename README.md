@@ -14,7 +14,7 @@ A web-based tool that converts text into UML diagrams using **Mermaid.js**. Buil
 **Backend:** Python (FastAPI or Flask), REST API  
 
 ## 📂 Directory Structure  
-    /diagramx
+    /UMLDX
     │── backend/ (Python API)
     │── frontend/ (Next.js App)
     │── .gitignore
