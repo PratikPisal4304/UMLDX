@@ -91,17 +91,60 @@ def get_available_model():
 
 # Mapping for different diagram types with detailed descriptions
 diagram_prompts = {
-    "classDiagram": "Create a comprehensive class diagram showing detailed class structures, including class names, attributes, methods, and relationships",
-    "sequenceDiagram": "Design a precise sequence diagram illustrating detailed object interactions, message exchanges, and process flow",
-    "flowchart": "Generate a clear and logical flowchart representing decision points, process steps, and control flow",
-    "useCase": "Develop a use case diagram showing actors, use cases, and their interactions with clear boundaries",
-    "stateDiagram": "Construct a state diagram displaying complex state transitions, guard conditions, and event triggers",
-    "activityDiagram": "Create an activity diagram representing workflow with swimlanes, decision points, and parallel processes",
-    "componentDiagram": "Design a component diagram showing software components, their interfaces, and dependencies",
-    "deploymentDiagram": "Generate a deployment diagram illustrating hardware nodes, software components, and their relationships",
-    "objectDiagram": "Create an object diagram showing specific object instances and their relationships",
-    "packageDiagram": "Develop a package diagram displaying package structures and dependencies"
+    "classDiagram": (
+        "Generate a comprehensive class diagram in valid Mermaid.js syntax that details classes, including their attributes, methods, "
+        "and various relationships. Include inheritance (using arrows with empty heads), aggregation (using a diamond on the aggregate side), "
+        "composition (using a filled diamond), and associations. Use standard UML visibility symbols (+, -, #) where applicable, and ensure every class "
+        "and relationship is clearly labeled for accurate object-oriented representation."
+    ),
+    "sequenceDiagram": (
+        "Create a detailed sequence diagram using Mermaid.js that clearly illustrates object interactions over time. "
+        "Depict lifelines, activation bars, and directional arrows (solid for synchronous and dashed for asynchronous messages) to indicate the sequence of messages. "
+        "Label each message and include optional return arrows if necessary to represent responses, ensuring the order of interactions is unambiguous."
+    ),
+    "flowchart": (
+        "Generate a clear and logical flowchart in Mermaid.js syntax that outlines process steps, decision points, loops, and termination points. "
+        "Use standard flowchart symbols—rectangles for process steps, diamonds for decision nodes, and ovals for start/end points—and connect them with directional arrows. "
+        "Ensure that each element is labeled appropriately and that the overall flow is easy to follow."
+    ),
+    "useCase": (
+        "Develop a use case diagram in valid Mermaid.js syntax that identifies key actors and their interactions with the system. "
+        "Depict use cases as ovals and actors as labeled stick figures or entities, with association lines connecting them. "
+        "Clearly highlight system boundaries to distinguish internal use cases from external interactions and, if applicable, illustrate <<include>> or <<extend>> relationships."
+    ),
+    "stateDiagram": (
+        "Construct a state diagram using Mermaid.js that maps out the various states of an object or system along with the transitions between them. "
+        "Include clearly marked initial and final states, label transition triggers and guard conditions, and use composite states if necessary. "
+        "Follow standard UML state notation to ensure all state changes are represented accurately."
+    ),
+    "activityDiagram": (
+        "Create an activity diagram in valid Mermaid.js syntax that represents workflows or processes. "
+        "Utilize swimlanes to separate responsibilities when applicable, include decision nodes, merge points, and clearly label each activity step. "
+        "Ensure that parallel processes and forks are clearly depicted, and that the overall flow adheres to standard UML conventions."
+    ),
+    "componentDiagram": (
+        "Design a component diagram using Mermaid.js that illustrates software components and their interrelationships. "
+        "Represent components as boxes, include interfaces and dependency arrows, and clearly show how different components communicate or integrate. "
+        "Follow standard UML symbols and conventions to ensure that component boundaries and interactions are easily understood."
+    ),
+    "deploymentDiagram": (
+        "Generate a deployment diagram in valid Mermaid.js syntax that displays the physical deployment of software artifacts on hardware nodes. "
+        "Include representations of servers, clients, network components, and other nodes, and clearly depict the relationships and communication paths between them. "
+        "Use appropriate symbols to indicate connections (e.g., solid or dashed lines) and consider cloud or virtualized icons if relevant."
+    ),
+    "objectDiagram": (
+        "Create an object diagram using Mermaid.js that captures a snapshot of specific object instances and their relationships at a given moment. "
+        "Emphasize the attributes and state of each object, and clearly illustrate associations between objects. "
+        "Ensure that the diagram reflects the current state of the system with precise and accurate labeling."
+    ),
+    "packageDiagram": (
+        "Develop a package diagram in valid Mermaid.js syntax that organizes classes or components into packages. "
+        "Clearly indicate dependencies and relationships between packages using arrows or dashed lines, and highlight the modular structure of the system. "
+        "Ensure that each package is well-defined and that the overall diagram reflects a clean, organized architecture."
+    )
 }
+
+
 
 # Cache to store recent diagrams
 cache = {"mermaid_code": None, "description": None}
